@@ -29,7 +29,7 @@ It also sets `{ debug: true }` to turn on console logging.
     ajax: datatable_articles_path,
     dom: 'lfriptrip',
     columns: [
-      {title: 'Title', data: 'title', width: "30%" },
+      {title: 'Title', data: 'title', width: '30%' },
       {title: 'Text', data: 'text', },
     ],
   }.to_json %>"
@@ -51,17 +51,17 @@ window.jQuery = window.$ = require('jquery')
 require('datatables.net')
 
 // Stimulus setup.
-import { Application } from "stimulus"
+import { Application } from 'stimulus'
 const application = Application.start()
 
 // Register the stimulus-datatables controller.
-import Datatable from "stimulus-datatables"
-application.register("datatable", Datatable)
+import Datatable from 'stimulus-datatables'
+application.register('datatable', Datatable)
 ```
 
 ## Advanced Usage
 
-You can make custom stimulus controllers which extend the standard
+You can make custom stimulus controllers which extend the
 Stimulus Datatables Controller (`SDC`).
 
 Datatables under Turbolinks triggers extra `initialize()` and `connect()` calls
