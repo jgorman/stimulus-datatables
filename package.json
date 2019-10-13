@@ -1,0 +1,29 @@
+{
+  "name": "stimulus-datatables",
+  "version": "1.0.0",
+  "description": "A Stimulus wrapper for DataTables under Turbolinks.",
+  "keywords": [
+    "stimulus",
+    "datatables",
+    "turbolinks"
+  ],
+  "main": "src/index.js",
+  "homepage": "https://github.com/jgorman/stimulus-datatables#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jgorman/stimulus-datatables.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jgorman/stimulus-datatables/issues"
+  },
+  "author": {
+    "name": "John Gorman",
+    "email": "johngorman2@gmail.com",
+    "url": "https://johngorman.io"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "datatables.net": "^1.10.20",
+    "stimulus": "^1.1.1"
+  }
+}
