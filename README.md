@@ -68,8 +68,10 @@ You can make custom stimulus controllers which extend the
 Stimulus Datatables Controller (`SDC`).
 
 Datatables under Turbolinks triggers extra `initialize()` and `connect()` calls
-that are ignored by the `SDC`. The `.DataTable()` call alters the table element
-which causes ghost initialization and connect events that need to be ignored.
+that are ignored by the `SDC`. The `.DataTable()` call alters the table
+element which causes ghost initialization and connect events that need
+to be ignored.
+
 When we navigate to a page which is in the Turbolinks cache, Turbolinks shows
 the cached copy as a preview page until the real page arrives from the server.
 There is no point in setting up DataTables for preview pages since we will
@@ -82,8 +84,8 @@ the DataTable instance.
 
 When you override `initialize()` and `connect()` you will want to ignore
 the ghost events by testing with `this.isBooting()`. See the example below.
-`super.initialize()` and `super.connect()` return the config object while booting
-and return false for ghost events.
+`super.initialize()` and `super.connect()` return the config object
+while booting and return false for ghost events.
 
 Call `this.log(msg, data)` to write to the console log
 to debug custom `SDC` setups. See below for an example.
@@ -123,6 +125,7 @@ export default class extends DataTable {
   }
 
   teardown() {
+    // Any before or after teardown actions.
     this.log('finished', { controller: this })
 
     // Call the super method to destroy the DataTable instance.
