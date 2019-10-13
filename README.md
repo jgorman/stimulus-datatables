@@ -4,7 +4,7 @@ A Stimulus wrapper for DataTables under Turbolinks.
 
 Here is a zero config example.
 
-```html+erb
+```html
 <table class="table" data-controller="datatable" >
   <thead>
     <tr><th>First</th><th>Last</th></tr>
@@ -20,7 +20,7 @@ Here is a zero config example.
 Here is an example of passing the ajax data path from Rails to DataTables.
 It also sets `{ debug: true }` to turn on console logging.
 
-```html+erb
+```erb
 <table id="ajax-datatable" class="table"
   data-controller="datatable"
   data-datatable-config="<%= {
@@ -152,7 +152,7 @@ call will trigger a stimulus reconnect with the new config.
 
 Here is the html containing the checkbox and the table.
 
-```html+erb
+```erb
 <input id="toggle-scrolling" type="checkbox" checked
        data-controller="articles-datatable"
        data-action="change->articles-datatable#toggle_scrolling"
