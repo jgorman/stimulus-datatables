@@ -42,14 +42,14 @@ class StimulusDataTables extends Controller {
   log = (msg, extra = '') => {
     const id = this.element.id
     const pad = msg.length < 10 ? 10 - msg.length : 0
-    console.log('SDC', this.dt_id || 0, msg, ' '.repeat(pad), id, extra)
+    console.log('DT', this.dt_id || 0, msg, ' '.repeat(pad), id, extra)
   }
 
   initialize() {
     if (!this.isBooting()) return false
 
     this.dt_id = ++dt_id
-    this.element.controller = this
+    this.element.dt = this
 
     // Setting scrollY fixes page reload bug in autoWidth.
     const pre_config = Object.assign({ scrollY: undefined }, this.config)
@@ -70,7 +70,7 @@ class StimulusDataTables extends Controller {
       .jQuery(this.element)
       .DataTable(Object.assign({}, this.config))
 
-    this.debug('connect', { controller: this })
+    this.debug('connect', { dt: this })
     return this.config
   }
 

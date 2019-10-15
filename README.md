@@ -1,11 +1,13 @@
 # DataTables Stimulus wrapper
 
-A Stimulus wrapper for DataTables under Turbolinks.
+A [Stimulus](https://github.com/stimulusjs/stimulus) wrapper for
+[DataTables](https://datatables.net) under
+[Turbolinks](https://github.com/turbolinks/turbolinks).
 
 Here is a zero config example.
 
-```html
-<table class="table" data-controller="datatable" >
+```erb
+<table id="zero-config" class="table" data-controller="datatable" >
   <thead>
     <tr><th>First</th><th>Last</th></tr>
   </thead>
@@ -18,6 +20,7 @@ Here is a zero config example.
 ```
 
 Here is an example of passing the ajax data path from Rails to DataTables.
+This uses the [ajax-datatables-rails](https://github.com/jbox-web/ajax-datatables-rails) gem.
 It also sets `{ debug: true }` to turn on console logging.
 
 ```erb
@@ -38,6 +41,17 @@ It also sets `{ debug: true }` to turn on console logging.
 ```
 
 ## Setup
+
+Add [ajax-datatables-rails](https://github.com/jbox-web/ajax-datatables-rails) to your Gemfile and follow the data source setup instructions.
+
+```
+gem 'ajax-datatables-rails'
+```
+
+Add [stimulus-datatables](https://github.com/jgorman/stimulus-datatables)
+to package.json and register it with
+[Stimulus](https://github.com/stimulusjs/stimulus).
+
 
 ```
 yarn add stimulus-datatables
@@ -65,15 +79,17 @@ application.register('datatable', Datatable)
 ## Advanced Usage
 
 You can make custom stimulus controllers which extend the
-Stimulus Datatables Controller (`SDC`).
+standard stimulus datatables controller.
 
 Datatables under Turbolinks triggers extra `initialize()` and `connect()` calls
-that are ignored by the `SDC`. The `.DataTable()` call alters the table
+that are ignored by the controller. The `.DataTable()` call alters the table
 element which causes ghost initialization and connect events that need
 to be ignored.
 
-When we navigate to a page which is in the Turbolinks cache, Turbolinks shows
-the cached copy as a preview page until the real page arrives from the server.
+When we navigate to a page which is already in the Turbolinks cache,
+Turbolinks shows the cached copy as a preview page until
+the real page arrives from the server.
+
 There is no point in setting up DataTables for preview pages since we will
 need to wait for the ajax call to retrieve the data from the server for
 display in the real page.
@@ -88,7 +104,7 @@ the ghost events by testing with `this.isBooting()`. See the example below.
 while booting and return false for ghost events.
 
 Call `this.log(msg, data)` to write to the console log
-to debug custom `SDC` setups. See below for an example.
+to debug custom controller setups. See below for an example.
 
 You can turn on debug messages by setting `{ debug: true }`.
 Call `this.debug(msg, data)` to write to console.log only when
@@ -125,8 +141,8 @@ export default class extends DataTable {
   }
 
   teardown() {
-    // Any before or after teardown actions.
-    this.log('finished', { controller: this })
+    // Any before or after teardown actions. Here we write to console.log.
+    this.log('finished', { dt: this })
 
     // Call the super method to destroy the DataTable instance.
     super.teardown()
@@ -139,7 +155,7 @@ export default class extends DataTable {
 Sometimes we will want to make changes to a running DataTables instance.
 
 In order to facilitate this, each DOM element is linked to its
-`STC` instance: `element.controller = controller`. Each `STC` instance is
+controller instance: `element.dt = this`. Each controller instance is
 linked back to the DOM element, the config, and the live DataTable API
 object.
 
@@ -147,7 +163,7 @@ Here is an example of a custom controller which can change state between
 scrolling or paging depending on a `#toggle-scrolling` checkbox.
 
 As the comment mentions, we can reconfigure a DataTable by updating
-the config and calling `controller.teardown()`. The `dataTable.destroy()`
+the config and calling `dt.teardown()`. The `dataTable.destroy()`
 call will trigger a stimulus reconnect with the new config.
 
 Here is the html containing the checkbox and the table.
@@ -169,7 +185,7 @@ Here is the html containing the checkbox and the table.
     dom: 'lfriptrip',
     pagingType: 'full_numbers',
     columns: [
-      {title: 'Title', data: 'title', width: "30%" },
+      {title: 'Title', data: 'title', width: '30%' },
       {title: 'Text', data: 'text' },
     ],
   }.to_json %>"
@@ -186,10 +202,10 @@ import DataTable from 'stimulus-datatables'
 export default class extends DataTable {
   toggle_scrolling = event => {
     const table = $('#articles-datatable')[0]
-    if (table && table.controller) {
-      const controller = table.controller
-      controller.setScrollingState()
-      controller.teardown() // This triggers a reconnect.
+    if (table && table.dt) {
+      const dt = table.dt
+      dt.setScrollingState()
+      dt.teardown() // This triggers a reconnect.
     }
   }
 
@@ -198,8 +214,8 @@ export default class extends DataTable {
   }
 
   setScrollingState = () => {
-    const toggler = $('#toggle-scrolling')[0]
-    const scrolling = toggler && toggler.checked
+    const checkbox = $('#toggle-scrolling')[0]
+    const scrolling = checkbox && checkbox.checked
     const config = this.config || {}
     config.scroller = scrolling
     config.scrollY = scrolling ? 600 : undefined
