@@ -64,6 +64,11 @@ window.jQuery = window.$ = require('jquery')
 // The controller will call: window.jQuery(table).DataTable(config)
 require('datatables.net')
 
+// These examples use bootstrap4 and the scroller plugin.
+// See https://datatables.net/download for more options.
+require('datatables.net-bs4')
+require('datatables.net-scroller-bs4')
+
 // Stimulus setup.
 import { Application } from 'stimulus'
 import { definitionsFromContext } from 'stimulus/webpack-helpers'
@@ -74,6 +79,19 @@ application.load(definitionsFromContext(controllers))
 // Register the stimulus-datatables controller.
 import Datatable from 'stimulus-datatables'
 application.register('datatable', Datatable)
+```
+
+There appears to be a Datatable problem with long lines not folding
+in the scroller plugin. Here is the scss setup for these examples
+with the line folding workaround.
+
+```scss
+@import 'datatables.net-bs4/css/dataTables.bootstrap4';
+@import 'datatables.net-scroller-bs4/css/scroller.bootstrap4.css';
+
+table.dataTable tbody tr td {
+  white-space: normal;
+}
 ```
 
 ## Advanced Usage
@@ -108,7 +126,7 @@ to debug custom controller setups. See below for an example.
 
 You can turn on debug messages by setting `{ debug: true }`.
 Call `this.debug(msg, data)` to write to console.log only when
-`this.config.debug === true`.
+`this.config.debug` is true.
 
 ```js
 import DataTable from 'stimulus-datatables'
@@ -118,7 +136,7 @@ export default class extends DataTable {
     // Ignore ghost events.
     if (!this.isBooting()) return
 
-    // Default settings here can be overridded by component configurations.
+    // Default settings here will be overridden by component configurations.
     this.config = { pagingType: 'full_numbers', debug: true }
 
     // Call the super method which gets the component configuration.
@@ -155,7 +173,7 @@ export default class extends DataTable {
 Sometimes we will want to make changes to a running DataTables instance.
 
 In order to facilitate this, each DOM element is linked to its
-controller instance: `element.dt = this`. Each controller instance is
+controller instance: `element.dt`. Each controller instance is
 linked back to the DOM element, the config, and the live DataTable API
 object.
 
@@ -163,8 +181,8 @@ Here is an example of a custom controller which can change state between
 scrolling or paging depending on a `#toggle-scrolling` checkbox.
 
 As the comment mentions, we can reconfigure a DataTable by updating
-the config and calling `dt.teardown()`. The `dataTable.destroy()`
-call will trigger a stimulus reconnect with the new config.
+the config and calling `dt.teardown()`. The teardown process will alter
+the DOM element which will trigger a stimulus reconnect with the new config.
 
 Here is the html containing the checkbox and the table.
 
@@ -193,8 +211,8 @@ Here is the html containing the checkbox and the table.
 </table>
 ```
 
-Here is the custom controller that toggles between scrolling and
-paging display modes.
+Here is the custom articles-datatable controller which toggles between
+scrolling and paging display modes.
 
 ```js
 import DataTable from 'stimulus-datatables'
