@@ -1,8 +1,10 @@
-# DataTables Stimulus wrapper
+## DataTables Stimulus Wrapper
 
 A [Stimulus](https://github.com/stimulusjs/stimulus) wrapper for
 [DataTables](https://datatables.net) under
 [Turbolinks](https://github.com/turbolinks/turbolinks).
+
+![Toggle Scrolling demo](images/toggle-scrolling.gif)
 
 Here is a zero config example.
 
@@ -31,6 +33,7 @@ It also sets `{ debug: true }` to turn on console logging.
     serverSide: true,
     ajax: datatable_articles_path,
     dom: 'lfriptrip',
+    stateSave: true,
     columns: [
       {title: 'Title', data: 'title', width: '30%' },
       {title: 'Text', data: 'text', },
@@ -172,13 +175,14 @@ export default class extends DataTable {
 
 Sometimes we will want to make changes to a running DataTables instance.
 
-In order to facilitate this, each DOM element is linked to its
-controller instance: `element.dt`. Each controller instance is
-linked back to the DOM element, the config, and the live DataTable API
-object.
+In order to facilitate this, the DOM table element is linked to its
+controller instance: `table.dt`. Each controller instance is
+linked back to the DOM table `dt.element`, the `dt.config`, and
+the live DataTable API object `dt.dataTable`.
 
 Here is an example of a custom controller which can change state between
 scrolling or paging depending on a `#toggle-scrolling` checkbox.
+This example is running in the animated gif above.
 
 As the comment mentions, we can reconfigure a DataTable by updating
 the config and calling `dt.teardown()`. The teardown process will alter
@@ -201,6 +205,7 @@ Here is the html containing the checkbox and the table.
     scroller: true,
     scrollY: 600,
     dom: 'lfriptrip',
+    deferRender: true,
     pagingType: 'full_numbers',
     columns: [
       {title: 'Title', data: 'title', width: '30%' },
@@ -218,25 +223,36 @@ scrolling and paging display modes.
 import DataTable from 'stimulus-datatables'
 
 export default class extends DataTable {
+
+  initialize() {
+    if (!this.isBooting()) return
+
+    // Link to the scrolling checkbox and back.
+    const checkbox = $('#toggle-scrolling')[0]
+    if (checkbox) {
+      checkbox.dt = this
+      this.checkbox = checkbox
+    }
+
+    // Get the table config and the scrolling state.
+    super.initialize()
+    this.setScrollingState()
+  }
+
   toggle_scrolling = event => {
-    const table = $('#articles-datatable')[0]
-    if (table && table.dt) {
-      const dt = table.dt
+    const dt = this.element.dt
+    if (dt) {
       dt.setScrollingState()
       dt.teardown() // This triggers a reconnect.
     }
   }
 
-  initialize() {
-    super.initialize() && this.setScrollingState()
-  }
-
   setScrollingState = () => {
-    const checkbox = $('#toggle-scrolling')[0]
-    const scrolling = checkbox && checkbox.checked
+    const scrolling = this.checkbox && this.checkbox.checked
     const config = this.config || {}
     config.scroller = scrolling
     config.scrollY = scrolling ? 600 : undefined
+    config.stateSave = !scrolling
   }
 }
 ```
