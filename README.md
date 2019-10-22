@@ -6,6 +6,8 @@ A [Stimulus](https://github.com/stimulusjs/stimulus) wrapper for
 
 ![Toggle Scrolling demo](images/toggle-scrolling.gif)
 
+## Examples
+
 Here is a zero config example.
 
 ```erb

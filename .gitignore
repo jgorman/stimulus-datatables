@@ -1,5 +1,6 @@
 yarn.lock
 yarn-error.log
 /node_modules/
+dist
 
 .sw[a-p]

@@ -7,7 +7,6 @@
     "datatables",
     "turbolinks"
   ],
-  "main": "src/index.js",
   "homepage": "https://github.com/jgorman/stimulus-datatables#readme",
   "repository": {
     "type": "git",
@@ -22,8 +21,19 @@
     "url": "https://johngorman.io"
   },
   "license": "MIT",
+  "scripts": {
+    "build": "babel src --out-dir dist --presets @babel/preset-env --plugins=@babel/proposal-class-properties",
+    "prepublish": "yarn run build"
+  },
+  "main": "dist/index.js",
   "dependencies": {
     "datatables.net": "^1.10.20",
     "stimulus": "^1.1.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/preset-env": "^7.6.3"
   }
 }
