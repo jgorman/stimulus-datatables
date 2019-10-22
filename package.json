@@ -1,6 +1,6 @@
 {
   "name": "stimulus-datatables",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A Stimulus wrapper for DataTables under Turbolinks.",
   "keywords": [
     "stimulus",
