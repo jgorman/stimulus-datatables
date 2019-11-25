@@ -1,7 +1,7 @@
 {
   "name": "stimulus-datatables",
-  "version": "1.0.5",
-  "description": "A Stimulus wrapper for DataTables under Turbolinks.",
+  "version": "1.0.6",
+  "description": "Run DataTables under Rails Turbolinks",
   "keywords": [
     "rails",
     "datatables",

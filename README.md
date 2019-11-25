@@ -1,7 +1,9 @@
-## DataTables Stimulus Wrapper
+## Run DataTables under Rails Turbolinks
+
+## (This has been renamed to rails-datatables)
 
 A [Stimulus](https://github.com/stimulusjs/stimulus) wrapper for
-[DataTables](https://datatables.net) under
+[DataTables](https://datatables.net) under Rails
 [Turbolinks](https://github.com/turbolinks/turbolinks).
 
 ![Toggle Scrolling demo](images/toggle-scrolling.gif)
@@ -76,10 +78,7 @@ require('datatables.net-scroller-bs4')
 
 // Stimulus setup.
 import { Application } from 'stimulus'
-import { definitionsFromContext } from 'stimulus/webpack-helpers'
 const application = Application.start()
-const controllers = require.context('../controllers', true, /\.js$/)
-application.load(definitionsFromContext(controllers))
 
 // Register the stimulus-datatables controller.
 import Datatable from 'stimulus-datatables'
