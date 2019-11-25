@@ -3,8 +3,9 @@
   "version": "1.0.5",
   "description": "A Stimulus wrapper for DataTables under Turbolinks.",
   "keywords": [
-    "stimulus",
+    "rails",
     "datatables",
+    "stimulus",
     "turbolinks"
   ],
   "homepage": "https://github.com/jgorman/stimulus-datatables#readme",
@@ -23,7 +24,7 @@
   "license": "MIT",
   "scripts": {
     "build": "babel src --out-dir dist --presets @babel/preset-env --plugins=@babel/proposal-class-properties",
-    "prepublish": "yarn run build"
+    "prepare": "yarn run build"
   },
   "main": "dist/index.js",
   "dependencies": {
